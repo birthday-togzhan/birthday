@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>С Днём Рождения, Любимая Сестрёнка! ✨🌸</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Comfortaa:wght@400;600;700&family=Montserrat:wght@400;600;700;800;900&family=Cinzel:wght@700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kaspi: '#00A859',
+                        kaspiDark: '#008a49',
+                        girlyPink: '#FF85A1',
+                        girlyLightPink: '#FFE5EC',
+                        roseGold: '#B76E79',
+                        softLavender: '#F3E8FF',
+                        goldAccent: '#D4AF37',
+                    },
+                    fontFamily: {
+                        handwriting: ['Caveat', 'cursive'],
+                        sans: ['Comfortaa', 'sans-serif'],
+                        heading: ['Montserrat', 'sans-serif'],
+                        serifHeader: ['Cinzel', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: 'Comfortaa', sans-serif;
+            user-select: none;
+        }
+
+        /* Background floating hearts canvas */
+        #hearts-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Glassmorphism styling */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 2px solid rgba(255, 255, 255, 0.75);
+            box-shadow: 0 15px 35px rgba(255, 133, 161, 0.22);
+        }
+
+        .glass-modal {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.28);
+        }
+
+        /* Luxury Certificate Frame Styling */
+        .certificate-border {
+            background: linear-gradient(135deg, #fffbeb 0%, #ffffff 50%, #fff7ed 100%);
+            border: 6px solid #fbbf24;
+            box-shadow: 0 0 35px rgba(245, 158, 11, 0.4), inset 0 0 15px rgba(251, 191, 36, 0.3);
+            position: relative;
+        }
+
+        .certificate-inner-frame {
+            border: 2px dashed #d97706;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        /* 3D Flip Card Gallery */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1.25rem;
+            overflow: hidden;
+        }
+
+        .flip-card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            color: #4a1525;
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Keyframe Animations */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(2deg); }
+        }
+
+        .animate-float {
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 133, 161, 0.6); }
+            50% { box-shadow: 0 0 30px rgba(255, 133, 161, 1); }
+        }
+
+        .animate-glow {
+            animation: pulseGlow 2s infinite;
+        }
+
+        @keyframes giftBoxBounce {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            75% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .animate-gift-box {
+            animation: giftBoxBounce 1.2s ease-in-out infinite;
+        }
+
+        /* Global Confetti Canvas overlay */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* Page section display smooth transitions */
+        .page-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .page-section.active {
+            display: block;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen flex flex-col justify-between text-gray-800">
+
+    <!-- Audio Element with Placeholder music.mp3 & Automatic Loop -->
+    <audio id="bg-music" src="files/videoplayback.mp4" loop preload="auto"></audio>
+
+    <!-- Ambient Floating Hearts Canvas -->
+    <canvas id="hearts-canvas"></canvas>
+
+    <!-- Global Confetti Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Top-Right Floating Mute/Unmute Audio Control Pill -->
+    <div class="fixed top-4 right-4 z-50 flex items-center gap-2 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-pink-200">
+        <button id="music-toggle-btn" class="text-pink-600 hover:text-pink-700 transition focus:outline-none flex items-center gap-2 font-medium text-sm">
+            <i id="music-icon" class="fa-solid fa-volume-xmark text-lg"></i>
+            <span id="music-text">Музыка: выкл</span>
+        </button>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <main class="relative z-10 container mx-auto px-4 py-8 max-w-4xl my-auto">
+
+        <!-- PAGE 1: GREETING & MUSIC LAUNCH -->
+        <section id="page-1" class="page-section active">
+            <div class="glass-card rounded-3xl p-8 md:p-12 text-center max-w-2xl mx-auto shadow-2xl relative overflow-hidden">
+                <div class="absolute -top-10 -left-10 w-32 h-32 bg-pink-300/40 rounded-full blur-2xl"></div>
+                <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-purple-300/40 rounded-full blur-2xl"></div>
+
+                <!-- Sparkle Badge -->
+                <div class="inline-flex items-center gap-2 bg-pink-100 text-pink-700 px-4 py-1.5 rounded-full text-sm font-semibold mb-6 animate-pulse border border-pink-200">
+                    <i class="fa-solid fa-sparkles text-pink-500"></i> Особый День ✨
+                </div>
+
+                <!-- Main Greeting Header -->
+                <h1 class="text-3xl md:text-5xl font-extrabold text-pink-600 mb-6 font-heading leading-tight drop-shadow-sm">
+                    С Днём Рождения, <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600">Любимая Сестрёнка!</span> ✨🌸
+                </h1>
+
+                <!-- Heart Icon Decorative -->
+                <div class="text-6xl text-pink-500 my-4 animate-float">
+                    💖
+                </div>
+
+                <!-- Warm Birthday Message -->
+                <p class="text-gray-700 text-base md:text-lg leading-relaxed mb-8 max-w-lg mx-auto font-sans">
+                    Сегодня день, когда на свет появилось самое яркое, доброе и прекрасное солнышко! Ты — не просто сестрёнка, ты самый надежный друг, поддержка и украшение нашей жизни. Пусть каждый твой день будет наполнен радостью, улыбками и исполнением самых заветных желаний! 🌷✨
+                </p>
+
+                <!-- Start Button (Starts Music & Proceeds to Page 2) -->
+                <button id="start-btn" onclick="startApp()" class="animate-glow bg-gradient-to-r from-pink-500 via-rose-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-bold text-lg md:text-xl px-10 py-4 rounded-full shadow-xl transform hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-3 mx-auto">
+                    <span>Перейти к сюрпризам ✨</span>
+                    <i class="fa-solid fa-arrow-right text-xl"></i>
+                </button>
+            </div>
+        </section>
+
+
+        <!-- PAGE 2: 3D FLIP GALLERY & COMPLIMENTS -->
+        <section id="page-2" class="page-section">
+            <div class="glass-card rounded-3xl p-6 md:p-10 shadow-2xl">
+                <!-- Header & Description -->
+                <div class="text-center md:text-left mb-8 md:flex md:items-center md:justify-between border-b border-pink-100 pb-6 gap-6">
+                    <div>
+                        <h2 class="text-2xl md:text-4xl font-extrabold text-pink-600 font-heading mb-2">
+                            Почему ты самая лучшая? 👑💕
+                        </h2>
+                        <p class="text-gray-600 text-sm md:text-base max-w-xl">
+                            Нажми на каждую карточку с фото, чтобы перевернуть её и узнать главные комплименты!
+                        </p>
+                    </div>
+                    <div class="mt-4 md:mt-0 flex-shrink-0 text-center">
+                        <span class="inline-block bg-pink-100 text-pink-600 font-bold px-4 py-2 rounded-2xl text-sm shadow-inner">
+                            ✨ Нажми на карточку!
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 3D Flip Photo Cards Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+
+                    <!-- Card 1 -->
+                    <div class="flip-card perspective-1000 h-64" onclick="toggleCard(this)">
+                        <div class="flip-card-inner transform duration-500">
+                            <div class="flip-card-front glass-card shadow-md flex flex-col justify-between p-3 border-2 border-pink-200 group">
+                                <div class="overflow-hidden rounded-xl h-44">
+                                    <img src="files/c1.png" alt="Фото 1" class="w-full h-full object-cover rounded-xl shadow-inner transition-transform duration-300 group-hover:scale-110">
+                                </div>
+                                <div class="py-2 text-pink-600 font-bold text-sm flex items-center justify-between px-2">
+                                    <span>Причина №1</span>
+                                    <i class="fa-solid fa-hand-pointer text-xs animate-bounce"></i>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <i class="fa-solid fa-heart-pulse text-3xl mb-3 text-pink-700"></i>
+                                <h3 class="font-bold text-lg mb-2">Всегда поддержишь</h3>
+                                <p class="text-xs md:text-sm text-pink-950 leading-relaxed">
+                                    В любой ситуации ты умеешь выслушать, дать лучший совет и обнять так, что все проблемы испаряются! 💕
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="flip-card perspective-1000 h-64" onclick="toggleCard(this)">
+                        <div class="flip-card-inner transform duration-500">
+                            <div class="flip-card-front glass-card shadow-md flex flex-col justify-between p-3 border-2 border-pink-200 group">
+                                <div class="overflow-hidden rounded-xl h-44">
+                                    <img src="files/c6.png" alt="Фото 2" class="w-full h-full object-cover rounded-xl shadow-inner transition-transform duration-300 group-hover:scale-110">
+                                </div>
+                                <div class="py-2 text-pink-600 font-bold text-sm flex items-center justify-between px-2">
+                                    <span>Причина №2</span>
+                                    <i class="fa-solid fa-hand-pointer text-xs animate-bounce"></i>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <i class="fa-solid fa-crown text-3xl mb-3 text-pink-700"></i>
+                                <h3 class="font-bold text-lg mb-2">Самая стильная</h3>
+                                <p class="text-xs md:text-sm text-pink-950 leading-relaxed">
+                                    Твой вкус и чувство стиля невероятны! Ты всегда выглядишь безупречно и вдохновляешь всех 💃✨
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="flip-card perspective-1000 h-64" onclick="toggleCard(this)">
+                        <div class="flip-card-inner transform duration-500">
+                            <div class="flip-card-front glass-card shadow-md flex flex-col justify-between p-3 border-2 border-pink-200 group">
+                                <div class="overflow-hidden rounded-xl h-44">
+                                    <img src="files/c3.png" alt="Фото 3" class="w-full h-full object-cover rounded-xl shadow-inner transition-transform duration-300 group-hover:scale-110">
+                                </div>
+                                <div class="py-2 text-pink-600 font-bold text-sm flex items-center justify-between px-2">
+                                    <span>Причина №3</span>
+                                    <i class="fa-solid fa-hand-pointer text-xs animate-bounce"></i>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <i class="fa-solid fa-face-smile-beam text-3xl mb-3 text-pink-700"></i>
+                                <h3 class="font-bold text-lg mb-2">Душа компании</h3>
+                                <p class="text-xs md:text-sm text-pink-950 leading-relaxed">
+                                    С тобой никогда не бывает скучно! Твоё чувство юмора и искренний смех заряжают всех вокруг позитивом 😊🎉
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="flip-card perspective-1000 h-64" onclick="toggleCard(this)">
+                        <div class="flip-card-inner transform duration-500">
+                            <div class="flip-card-front glass-card shadow-md flex flex-col justify-between p-3 border-2 border-pink-200 group">
+                                <div class="overflow-hidden rounded-xl h-44">
+                                    <img src="files/c4.png" alt="Фото 4" class="w-full h-full object-cover rounded-xl shadow-inner transition-transform duration-300 group-hover:scale-110">
+                                </div>
+                                <div class="py-2 text-pink-600 font-bold text-sm flex items-center justify-between px-2">
+                                    <span>Причина №4</span>
+                                    <i class="fa-solid fa-hand-pointer text-xs animate-bounce"></i>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <i class="fa-solid fa-hands-holding-heart text-3xl mb-3 text-pink-700"></i>
+                                <h3 class="font-bold text-lg mb-2">Доброе сердце</h3>
+                                <p class="text-xs md:text-sm text-pink-950 leading-relaxed">
+                                    У тебя самое чуткое, бескорыстное и доброе сердце. Ты заботишься о всех близких 💖
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="flip-card perspective-1000 h-64" onclick="toggleCard(this)">
+                        <div class="flip-card-inner transform duration-500">
+                            <div class="flip-card-front glass-card shadow-md flex flex-col justify-between p-3 border-2 border-pink-200 group">
+                                <div class="overflow-hidden rounded-xl h-44">
+                                    <img src="files/c5.png" alt="Фото 5" class="w-full h-full object-cover rounded-xl shadow-inner transition-transform duration-300 group-hover:scale-110">
+                                </div>
+                                <div class="py-2 text-pink-600 font-bold text-sm flex items-center justify-between px-2">
+                                    <span>Причина №5</span>
+                                    <i class="fa-solid fa-hand-pointer text-xs animate-bounce"></i>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <i class="fa-solid fa-sun text-3xl mb-3 text-pink-700"></i>
+                                <h3 class="font-bold text-lg mb-2">Делаешь мир ярче</h3>
+                                <p class="text-xs md:text-sm text-pink-950 leading-relaxed">
+                                    Твое присутствие озаряет всё вокруг светом! Ты даришь уют и настоящую радость 🌟
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 6 -->
+                    <div class="flip-card perspective-1000 h-64" onclick="toggleCard(this)">
+                        <div class="flip-card-inner transform duration-500">
+                            <div class="flip-card-front glass-card shadow-md flex flex-col justify-between p-3 border-2 border-pink-200 group">
+                                <div class="overflow-hidden rounded-xl h-44">
+                                    <img src="files/c2.png" alt="Фото 6" class="w-full h-full object-cover rounded-xl shadow-inner transition-transform duration-300 group-hover:scale-110">
+                                </div>
+                                <div class="py-2 text-pink-600 font-bold text-sm flex items-center justify-between px-2">
+                                    <span>Причина №6</span>
+                                    <i class="fa-solid fa-hand-pointer text-xs animate-bounce"></i>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <i class="fa-solid fa-star text-3xl mb-3 text-pink-700"></i>
+                                <h3 class="font-bold text-lg mb-2">Уникальная</h3>
+                                <p class="text-xs md:text-sm text-pink-950 leading-relaxed">
+                                    Потому что другой такой невероятной сестрёнки нет и никогда не будет во всём мире! 🌸✨
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Next Page Button -->
+                <div class="text-center">
+                    <button onclick="goToPage(3)" class="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold text-lg px-8 py-3.5 rounded-full shadow-lg transform hover:scale-105 transition duration-300 flex items-center gap-3 mx-auto">
+                        <span>Перейти к космической игре</span>
+                        <i class="fa-solid fa-rocket"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- PAGE 3: SPACE WARS MINI-GAME -->
+        <section id="page-3" class="page-section">
+            <div class="glass-card rounded-3xl p-4 md:p-8 shadow-2xl relative">
+                <!-- Title Header -->
+                <div class="text-center mb-4">
+                    <h2 class="text-xl md:text-3xl font-extrabold text-pink-600 font-heading mb-1">
+                        Пусть всё плохое обходит тебя стороной! 💖
+                    </h2>
+                    <p class="text-gray-600 text-xs md:text-sm">
+                        Сбивай все невзгоды и негатив! Набери <span class="font-bold text-pink-600">20 очков</span>, чтобы открыть подарок!
+                    </p>
+                </div>
+
+                <!-- Game Canvas Stats Header -->
+                <div class="flex items-center justify-between bg-pink-100/80 px-4 py-2 rounded-2xl mb-3 border border-pink-200">
+                    <div class="text-pink-700 font-bold text-sm md:text-base flex items-center gap-2">
+                        <i class="fa-solid fa-trophy text-amber-500"></i>
+                        <span>Очки: <span id="game-score" class="text-lg text-pink-600 font-extrabold">0</span> / 20</span>
+                    </div>
+                    <div class="text-pink-600 text-xs md:text-sm font-medium">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Выстрелы: Автоматически
+                    </div>
+                </div>
+
+                <!-- Game Canvas Container -->
+                <div class="relative w-full overflow-hidden rounded-2xl shadow-inner bg-slate-900 border-2 border-pink-300 h-[420px]" id="canvas-container">
+                    <canvas id="game-canvas" class="w-full h-full block cursor-crosshair"></canvas>
+
+                    <!-- Overlay before game starts -->
+                    <div id="game-start-overlay" class="absolute inset-0 bg-slate-950/75 backdrop-blur-xs flex flex-col items-center justify-center text-white p-6 text-center z-10">
+                        <div class="text-5xl mb-3">🚀</div>
+                        <h3 class="text-xl md:text-2xl font-bold mb-2">Миссия: Уничтожь Негатив!</h3>
+                        <p class="text-xs md:text-sm text-gray-300 mb-6 max-w-sm">
+                            Управляй корабликом мышкой или пальцем. Пули вылетают автоматически!
+                        </p>
+                        <button onclick="startGame()" class="bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold px-8 py-3 rounded-full text-lg shadow-lg hover:scale-105 transition">
+                            Поехали! 🎮
+                        </button>
+                    </div>
+
+                    <!-- Bouncing Gift Box Modal Overlay (Appears on Win) -->
+                    <div id="gift-modal" class="hidden absolute inset-0 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center text-center p-6 z-20">
+                        <div class="animate-gift-box text-7xl md:text-8xl cursor-pointer filter drop-shadow-[0_0_25px_rgba(255,182,193,0.9)] my-4" onclick="claimGamePrize()">
+                            🎁
+                        </div>
+                        <h3 class="text-2xl font-bold text-pink-300 mb-2">Ура! Победа! 🎉</h3>
+                        <p class="text-white text-sm md:text-base mb-6">Ты уничтожила весь негатив! Нажми на коробку с подарком!</p>
+                        <button onclick="claimGamePrize()" class="bg-pink-500 text-white font-bold px-6 py-2.5 rounded-full hover:bg-pink-600 transition shadow-lg">
+                            Получить Сертификат ✨
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mt-3 text-center text-xs text-gray-500 md:hidden">
+                    💡 Води пальцем по экрану, чтобы двигать корабль
+                </div>
+            </div>
+        </section>
+
+        <!-- LUXURY GIFT CERTIFICATE MODAL -->
+        <div id="game-prize-modal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+            <div class="max-w-md w-full rounded-3xl p-2 text-center relative shadow-2xl transform transition-all animate-float">
+                
+                <!-- Certificate Outer Golden Border Frame -->
+                <div class="certificate-border rounded-3xl p-5 md:p-6 text-gray-900">
+                    
+                    <!-- Decorative Corner Flourishes -->
+                    <div class="absolute top-3 left-3 text-amber-500 text-xl"><i class="fa-solid fa-crown"></i></div>
+                    <div class="absolute top-3 right-3 text-amber-500 text-xl"><i class="fa-solid fa-crown"></i></div>
+                    
+                    <div class="certificate-inner-frame">
+                        
+                        <!-- Top Ribbon Tag -->
+                        <div class="inline-block bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 text-white font-bold text-xs uppercase tracking-widest px-4 py-1 rounded-full shadow-md mb-3 border border-amber-300">
+                            ✨ ОФИЦИАЛЬНЫЙ ДОКУМЕНТ ✨
+                        </div>
+
+                        <!-- Certificate Header -->
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-amber-800 font-serifHeader tracking-wider mb-1 uppercase">
+                            ПОДАРОЧНЫЙ СЕРТИФИКАТ
+                        </h2>
+                        
+                        <p class="text-xs text-amber-700 italic font-serif mb-4">Настоящий сертификат выдан самой прекрасной сестре!</p>
+
+                        <!-- Certificate Body Quote Box -->
+                        <div class="bg-white/90 border-2 border-amber-300 rounded-2xl p-4 my-3 text-gray-800 text-sm md:text-base leading-relaxed font-semibold shadow-inner relative">
+                            <div class="text-2xl text-amber-500 mb-1">💍✨</div>
+                            "Поздравляем, вы получили богатого, любящего, обеспеченного, готового обеспечивать, сильного, красивого претендента в мужья 💍✨"
+                        </div>
+
+                        <!-- Certificate Stamp & Seal Graphic -->
+                        <div class="flex items-center justify-between mt-4 px-2">
+                            <div class="text-left text-xs text-amber-900 font-medium">
+                                <div>Серия: <span class="font-bold">№100%-LOVE</span></div>
+                                <div>Гарантия: <span class="font-bold text-amber-700">ВЕЧНАЯ ❤️</span></div>
+                            </div>
+
+                            <!-- Gold Wax Seal Icon -->
+                            <div class="w-12 h-12 bg-gradient-to-tr from-amber-600 to-amber-400 rounded-full flex items-center justify-center text-white shadow-lg border-2 border-amber-200 text-xl">
+                                🏅
+                            </div>
+                        </div>
+
+                        <!-- Modal Next Button -->
+                        <button onclick="closePrizeModalAndNext()" class="mt-6 w-full bg-gradient-to-r from-amber-500 via-rose-500 to-pink-500 hover:from-amber-600 hover:to-pink-600 text-white font-bold py-3 rounded-2xl shadow-lg transition duration-300 flex items-center justify-center gap-2 text-base">
+                            <span>Перейти дальше</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- PAGE 4: QUESTIONS WITH ESCAPING "ДА" BUTTON & KASPI RECEIPT -->
+        <section id="page-4" class="page-section">
+            <!-- Part A: Interactive Questions Container -->
+            <div id="questions-container" class="glass-card rounded-3xl p-6 md:p-10 shadow-2xl text-center relative overflow-hidden min-h-[500px] flex flex-col justify-between">
+
+                <!-- Question Header -->
+                <div id="question-header">
+                    <span id="question-badge" class="bg-pink-100 text-pink-700 font-bold text-xs px-3 py-1 rounded-full border border-pink-200">
+                        Вопрос 1 из 3
+                    </span>
+                    <h2 id="question-text" class="text-2xl md:text-3xl font-extrabold text-pink-600 mt-3 font-heading">
+                        Ты хочешь дайсон?
+                    </h2>
+                </div>
+
+                <!-- Central Question Photo Image Placeholder -->
+                <div class="my-4 flex justify-center items-center relative h-48 md:h-56">
+                    <img id="question-image" src="https://placehold.co/400x400/ffb6c1/ffffff?text=Dyson+Airwrap+✨" alt="Изображение вопроса" class="h-full object-contain rounded-2xl shadow-md border-2 border-pink-200 transition-all duration-300">
+                </div>
+
+                <!-- Answer Buttons Area Container (Symmetrical Initial Positions) -->
+                <div id="buttons-area" class="relative w-full max-w-lg mx-auto h-28 bg-white/30 rounded-2xl border border-pink-100/60 p-2 overflow-hidden flex items-center justify-center">
+                    
+                    <!-- Fixed Stationary "НЕТ" Button (Symmetrical Left) -->
+                    <button id="btn-no" onclick="answerNo()" class="absolute z-20 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold px-8 py-3 rounded-2xl shadow-md transition-none border border-gray-300 text-lg" style="left: 25%; top: 50%; transform: translate(-50%, -50%);">
+                        НЕТ
+                    </button>
+
+                    <!-- Escaping "ДА" Button (Symmetrical Right Initially, Smoothly evades cursor) -->
+                    <button id="btn-yes" class="absolute z-30 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold px-8 py-3 rounded-2xl shadow-lg text-lg transition-all duration-300 ease-out" style="left: 75%; top: 50%; transform: translate(-50%, -50%);">
+                        ДА
+                    </button>
+
+                </div>
+            </div>
+
+            <!-- Pre-Receipt Modal Popup -->
+            <div id="pre-receipt-modal" class="fixed inset-0 bg-black/60 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+                <div class="glass-modal max-w-md w-full rounded-3xl p-6 md:p-8 text-center shadow-2xl">
+                    <div class="text-6xl mb-3">😉</div>
+                    <h3 class="text-2xl font-bold text-pink-600 mb-3 font-heading">
+                        Я так и знал!
+                    </h3>
+                    <p class="text-gray-700 text-base mb-6 font-sans">
+                        Я так и знал, что это всё тебе не нужно 😉✨
+                    </p>
+                    <button onclick="showKaspiReceipt()" class="w-full bg-gradient-to-r from-emerald-500 to-kaspi text-white font-bold py-3.5 rounded-2xl shadow-lg hover:bg-kaspiDark transition text-lg flex items-center justify-center gap-2">
+                        <span>Забрать настоящий подарок 🎁</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Part B: Kaspi Receipt Card Container -->
+            <div id="kaspi-receipt-container" class="hidden">
+                <div class="max-w-md mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-200 text-gray-800">
+                    
+                    <!-- Kaspi Green Header Banner -->
+                    <div class="bg-kaspi p-6 text-white text-center relative">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="font-bold text-lg tracking-wider flex items-center gap-1">
+                                <span class="bg-white text-kaspi font-black px-2 py-0.5 rounded-md text-sm">Kaspi</span>.kz
+                            </span>
+                            <span class="bg-kaspiDark text-xs px-2.5 py-1 rounded-full font-medium">Kaspi Gold</span>
+                        </div>
+                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto text-kaspi text-3xl shadow-md my-2">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mt-1">Перевод успешен</h3>
+                        <p class="text-xs text-emerald-100 opacity-90">Чек об оплате / Переводе</p>
+                    </div>
+
+                    <!-- Receipt Amount Display -->
+                    <div class="p-6 text-center border-b border-gray-100 bg-emerald-50/40">
+                        <div class="text-xs text-gray-500 uppercase tracking-wider mb-1 font-semibold">Сумма перевода</div>
+                        <div class="text-4xl font-extrabold text-kaspi font-heading">
+                            +50 000 ₸
+                        </div>
+                    </div>
+
+                    <!-- Receipt Details Grid -->
+                    <div class="p-6 space-y-4 text-sm">
+                        <div class="flex justify-between items-center py-1 border-b border-gray-100">
+                            <span class="text-gray-500 font-medium">От кого:</span>
+                            <span class="font-bold text-gray-800">Твой любимый брат ❤️</span>
+                        </div>
+                        <div class="flex justify-between items-center py-1 border-b border-gray-100">
+                            <span class="text-gray-500 font-medium">Кому:</span>
+                            <span class="font-bold text-gray-800">Самой лучшей сестре ✨</span>
+                        </div>
+                        <div class="flex justify-between items-center py-1 border-b border-gray-100">
+                            <span class="text-gray-500 font-medium">Дата и время:</span>
+                            <span id="receipt-date" class="font-semibold text-gray-700">Сегодня</span>
+                        </div>
+                        <div class="flex justify-between items-start py-1 border-b border-gray-100">
+                            <span class="text-gray-500 font-medium">Назначение:</span>
+                            <span class="font-semibold text-pink-600 text-right max-w-[180px]">На самые классные девичьи радости ✨🛍️</span>
+                        </div>
+                        <div class="flex justify-between items-center py-1">
+                            <span class="text-gray-500 font-medium">Статус:</span>
+                            <span class="inline-flex items-center gap-1.5 font-bold text-kaspi bg-emerald-100 px-3 py-1 rounded-full text-xs">
+                                <i class="fa-solid fa-circle-check"></i> Успешно переведено
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Footer Action Buttons -->
+                    <div class="p-6 bg-gray-50 border-t border-gray-100 flex flex-col gap-3">
+                        <button onclick="triggerConfettiBurst()" class="w-full bg-kaspi hover:bg-kaspiDark text-white font-bold py-3 rounded-xl shadow transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-party-horn"></i>
+                            <span>Запустить салют конфетти! 🎉</span>
+                        </button>
+                        <button onclick="goToPage(1)" class="w-full bg-pink-100 hover:bg-pink-200 text-pink-700 font-semibold py-2.5 rounded-xl transition text-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-rotate-right"></i>
+                            <span>Пройти поздравление снова</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+        // GLOBAL STATE
+        let currentPage = 1;
+        let isAudioPlaying = false;
+
+        // AUDIO CONTROLLER WITH FILE & SYNTHETIC FALLBACK
+        const bgMusic = document.getElementById('bg-music');
+
+        // Loop guarantee event handler
+        bgMusic.addEventListener('ended', function() {
+            bgMusic.currentTime = 10;
+            bgMusic.play().catch(e => console.log('Loop playback trigger:', e));
+        });
+
+        function playBgMusic() {
+            bgMusic.currentTime = 10;
+            bgMusic.play().then(() => {
+                isAudioPlaying = true;
+                updateMusicUI();
+            }).catch(err => {
+                console.log("Audio play blocked or file not found:", err);
+                // Fallback synth logic if local audio file missing
+                startFallbackAudioSynth();
+            });
+        }
+
+        function toggleMusic() {
+            if (bgMusic.paused && !isAudioPlaying) {
+                bgMusic.play().then(() => {
+                    isAudioPlaying = true;
+                    updateMusicUI();
+                }).catch(() => {
+                    startFallbackAudioSynth();
+                });
+            } else {
+                bgMusic.pause();
+                isAudioPlaying = false;
+                if (synthInterval) clearInterval(synthInterval);
+                updateMusicUI();
+            }
+        }
+
+        function updateMusicUI() {
+            const icon = document.getElementById('music-icon');
+            const text = document.getElementById('music-text');
+            if (isAudioPlaying) {
+                icon.className = 'fa-solid fa-volume-high text-lg text-pink-600 animate-pulse';
+                text.innerText = 'Музыка: вкл';
+            } else {
+                icon.className = 'fa-solid fa-volume-xmark text-lg text-gray-400';
+                text.innerText = 'Музыка: выкл';
+            }
+        }
+
+        document.getElementById('music-toggle-btn').addEventListener('click', toggleMusic);
+
+        // Fallback Synthesizer in case music.mp3 is not loaded
+        let synthCtx = null;
+        let synthInterval = null;
+        function startFallbackAudioSynth() {
+            if (!synthCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                synthCtx = new AudioContext();
+            }
+            if (synthCtx.state === 'suspended') {
+                synthCtx.resume();
+            }
+            isAudioPlaying = true;
+            updateMusicUI();
+
+            const notes = [261.63, 329.63, 392.00, 523.25, 440.00, 349.23, 392.00, 329.63];
+            let step = 0;
+            if (synthInterval) clearInterval(synthInterval);
+            synthInterval = setInterval(() => {
+                if (isAudioPlaying && synthCtx) {
+                    try {
+                        const osc = synthCtx.createOscillator();
+                        const gain = synthCtx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(notes[step % notes.length], synthCtx.currentTime);
+                        gain.gain.setValueAtTime(0.08, synthCtx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.0001, synthCtx.currentTime + 0.4);
+                        osc.connect(gain);
+                        gain.connect(synthCtx.destination);
+                        osc.start();
+                        osc.stop(synthCtx.currentTime + 0.4);
+                        step++;
+                    } catch(e){}
+                }
+            }, 450);
+        }
+
+        function startApp() {
+            playBgMusic();
+            goToPage(2);
+        }
+
+        function goToPage(pageNum) {
+            currentPage = pageNum;
+            document.querySelectorAll('.page-section').forEach(sec => {
+                sec.classList.remove('active');
+            });
+            const target = document.getElementById(`page-${pageNum}`);
+            if (target) {
+                target.classList.add('active');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if (pageNum === 3) {
+                initGameCanvas();
+            } else if (pageNum === 4) {
+                resetQuestions();
+            }
+        }
+
+        function toggleCard(cardElement) {
+            cardElement.classList.toggle('flipped');
+        }
+
+        const heartsCanvas = document.getElementById('hearts-canvas');
+        const hCtx = heartsCanvas.getContext('2d');
+        let hearts = [];
+
+        function resizeHeartsCanvas() {
+            heartsCanvas.width = window.innerWidth;
+            heartsCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeHeartsCanvas);
+        resizeHeartsCanvas();
+
+        class Heart {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * heartsCanvas.width;
+                this.y = heartsCanvas.height + Math.random() * 50;
+                this.size = Math.random() * 14 + 10;
+                this.speedY = Math.random() * 1.2 + 0.5;
+                this.opacity = Math.random() * 0.4 + 0.2;
+                this.color = `hsla(${Math.random() * 40 + 330}, 100%, 75%, ${this.opacity})`;
+            }
+            update() {
+                this.y -= this.speedY;
+                this.x += Math.sin(this.y * 0.02) * 0.4;
+                if (this.y < -30) {
+                    this.reset();
+                }
+            }
+            draw() {
+                hCtx.save();
+                hCtx.translate(this.x, this.y);
+                hCtx.fillStyle = this.color;
+                hCtx.beginPath();
+                hCtx.moveTo(0, 0);
+                hCtx.bezierCurveTo(-this.size / 2, -this.size / 2, -this.size, this.size / 3, 0, this.size);
+                hCtx.bezierCurveTo(this.size, this.size / 3, this.size / 2, -this.size / 2, 0, 0);
+                hCtx.fill();
+                hCtx.restore();
+            }
+        }
+
+        for (let i = 0; i < 20; i++) {
+            hearts.push(new Heart());
+        }
+
+        function animateHearts() {
+            hCtx.clearRect(0, 0, heartsCanvas.width, heartsCanvas.height);
+            hearts.forEach(h => {
+                h.update();
+                h.draw();
+            });
+            requestAnimationFrame(animateHearts);
+        }
+        animateHearts();
+
+        let gameCanvas, gCtx;
+        let gameActive = false;
+        let score = 0;
+        let player = { x: 0, y: 0, width: 50, height: 50 };
+        let bullets = [];
+        let enemies = [];
+        let lastBulletTime = 0;
+        let lastEnemyTime = 0;
+        let animFrameId = null;
+
+        // Enemy Photo Placeholders (Cropped square proportions with object-fit logic)
+        const enemyPhotoURLs = [
+            "files/e1.png",
+            "files/e2.png",
+            "files/e3.png",
+            "files/e4.png",
+            "files/e5.png",
+        ];
+        let loadedEnemyImages = [];
+
+        function preloadEnemyImages() {
+            loadedEnemyImages = enemyPhotoURLs.map(url => {
+                const img = new Image();
+                img.src = url;
+                return img;
+            });
+        }
+        preloadEnemyImages();
+
+        function initGameCanvas() {
+            gameCanvas = document.getElementById('game-canvas');
+            const container = document.getElementById('canvas-container');
+            gameCanvas.width = container.clientWidth;
+            gameCanvas.height = container.clientHeight;
+            gCtx = gameCanvas.getContext('2d');
+
+            player.x = gameCanvas.width / 2 - player.width / 2;
+            player.y = gameCanvas.height - 70;
+
+            // Controls
+            gameCanvas.onmousemove = (e) => {
+                if (!gameActive) return;
+                const rect = gameCanvas.getBoundingClientRect();
+                player.x = e.clientX - rect.left - player.width / 2;
+                player.x = Math.max(0, Math.min(gameCanvas.width - player.width, player.x));
+            };
+
+            gameCanvas.ontouchmove = (e) => {
+                if (!gameActive) return;
+                const rect = gameCanvas.getBoundingClientRect();
+                if (e.touches[0]) {
+                    player.x = e.touches[0].clientX - rect.left - player.width / 2;
+                    player.x = Math.max(0, Math.min(gameCanvas.width - player.width, player.x));
+                }
+            };
+        }
+
+        function startGame() {
+            document.getElementById('game-start-overlay').classList.add('hidden');
+            document.getElementById('gift-modal').classList.add('hidden');
+            score = 0;
+            document.getElementById('game-score').innerText = score;
+            bullets = [];
+            enemies = [];
+            gameActive = true;
+            lastBulletTime = Date.now();
+            lastEnemyTime = Date.now();
+            
+            if (animFrameId) cancelAnimationFrame(animFrameId);
+            runGameLoop();
+        }
+
+        function runGameLoop() {
+            if (!gameActive) return;
+
+            gCtx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+            // Draw Stars BG
+            gCtx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+            for (let i = 0; i < 20; i++) {
+                let sx = (Math.sin(i * 99 + Date.now() * 0.001) * 0.5 + 0.5) * gameCanvas.width;
+                let sy = ((i * 35 + Date.now() * 0.05) % gameCanvas.height);
+                gCtx.fillRect(sx, sy, 2, 2);
+            }
+
+            const now = Date.now();
+
+            // Automatic Shooting (every 200ms)
+            if (now - lastBulletTime > 200) {
+                bullets.push({
+                    x: player.x + player.width / 2 - 3,
+                    y: player.y,
+                    width: 6,
+                    height: 14,
+                    speed: 7
+                });
+                lastBulletTime = now;
+            }
+
+            // Spawn Enemies (every 1000ms)
+            if (now - lastEnemyTime > 1000) {
+                const img = loadedEnemyImages[Math.floor(Math.random() * loadedEnemyImages.length)];
+                enemies.push({
+                    x: Math.random() * (gameCanvas.width - 50),
+                    y: -50,
+                    width: 60,
+                    height: 60,
+                    speed: 1 + Math.random() * 0.6,
+                    img: img
+                });
+                lastEnemyTime = now;
+            }
+
+            // Update & Draw Bullets
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                let b = bullets[i];
+                b.y -= b.speed;
+                gCtx.fillStyle = '#ff85a1';
+                gCtx.shadowBlur = 8;
+                gCtx.shadowColor = '#ff85a1';
+                gCtx.fillRect(b.x, b.y, b.width, b.height);
+                gCtx.shadowBlur = 0;
+
+                if (b.y < -20) {
+                    bullets.splice(i, 1);
+                }
+            }
+
+            const maxScore = 20;
+
+            // Update & Draw Enemies
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                let e = enemies[i];
+                e.y += e.speed;
+
+                // Draw enemy image inside rounded cropped square frame
+                gCtx.save();
+                gCtx.beginPath();
+                gCtx.roundRect(e.x, e.y, e.width, e.height, 12);
+                gCtx.clip();
+                if (e.img && e.img.complete) {
+                    gCtx.drawImage(e.img, e.x, e.y, e.width, e.height);
+                } else {
+                    gCtx.fillStyle = '#e17055';
+                    gCtx.fillRect(e.x, e.y, e.width, e.height);
+                }
+                gCtx.restore();
+
+                // Draw enemy border
+                gCtx.strokeStyle = 'rgba(255, 133, 161, 0.8)';
+                gCtx.lineWidth = 2;
+                gCtx.beginPath();
+                gCtx.roundRect(e.x, e.y, e.width, e.height, 12);
+                gCtx.stroke();
+
+                // Collision Detection with bullets
+                for (let j = bullets.length - 1; j >= 0; j--) {
+                    let b = bullets[j];
+                    if (
+                        b.x < e.x + e.width &&
+                        b.x + b.width > e.x &&
+                        b.y < e.y + e.height &&
+                        b.y + b.height > e.y
+                    ) {
+                        enemies.splice(i, 1);
+                        bullets.splice(j, 1);
+                        score += 1;
+                        document.getElementById('game-score').innerText = score;
+
+                        if (score >= maxScore) {
+                            gameActive = false;
+                            showGiftBoxModal();
+                            return;
+                        }
+                        break;
+                    }
+                }
+
+                if (e.y > gameCanvas.height + 60) {
+                    enemies.splice(i, 1);
+                }
+            }
+
+            // Draw Player Spaceship
+            gCtx.save();
+            gCtx.fillStyle = '#ff477e';
+            gCtx.beginPath();
+            gCtx.moveTo(player.x + player.width / 2, player.y);
+            gCtx.lineTo(player.x + player.width, player.y + player.height);
+            gCtx.lineTo(player.x, player.y + player.height);
+            gCtx.closePath();
+            gCtx.fill();
+
+            // Cockpit
+            gCtx.fillStyle = '#ffffff';
+            gCtx.beginPath();
+            gCtx.arc(player.x + player.width / 2, player.y + 22, 10, 0, Math.PI * 2);
+            gCtx.fill();
+
+            // Thruster Flame
+            gCtx.fillStyle = Math.random() > 0.5 ? '#ffb703' : '#fb8500';
+            gCtx.beginPath();
+            gCtx.moveTo(player.x + 15, player.y + player.height);
+            gCtx.lineTo(player.x + player.width / 2, player.y + player.height + 15 + Math.random() * 8);
+            gCtx.lineTo(player.x + player.width - 15, player.y + player.height);
+            gCtx.closePath();
+            gCtx.fill();
+            gCtx.restore();
+
+            animFrameId = requestAnimationFrame(runGameLoop);
+        }
+
+        function showGiftBoxModal() {
+            document.getElementById('gift-modal').classList.remove('hidden');
+        }
+
+        function claimGamePrize() {
+            document.getElementById('gift-modal').classList.add('hidden');
+            const prizeModal = document.getElementById('game-prize-modal');
+            prizeModal.classList.remove('hidden');
+            prizeModal.classList.add('flex');
+            triggerConfettiBurst();
+        }
+
+        function closePrizeModalAndNext() {
+            const prizeModal = document.getElementById('game-prize-modal');
+            prizeModal.classList.add('hidden');
+            prizeModal.classList.remove('flex');
+            goToPage(4);
+        }
+
+        const questions = [
+            {
+                text: "Ты хочешь Dyson?",
+                image: "files/dyson.png",
+                badge: "Вопрос 1 из 3"
+            },
+            {
+                text: "Ты хочешь iPhone 18 Pro Max 2 TB?",
+                image: "files/iphone.png",
+                badge: "Вопрос 2 из 3"
+            },
+            {
+                text: "Ты хочешь путевку на Мальдивы на месяц?",
+                image: "files/maldives.png",
+                badge: "Вопрос 3 из 3"
+            }
+        ];
+        let currentQuestionIdx = 0;
+
+        const btnYes = document.getElementById('btn-yes');
+        const btnNo = document.getElementById('btn-no');
+        const buttonsArea = document.getElementById('buttons-area');
+
+        /**
+         * Smart Evading Algorithm for "ДА" Button
+         * Guarantees:
+         * 1. "ДА" NEVER lands on or near the cursor coordinates (distance >= 150px).
+         * 2. "ДА" NEVER overlaps stationary "НЕТ" button.
+         * 3. Stays within container boundaries.
+         */
+        function moveYesButton(e) {
+            const areaRect = buttonsArea.getBoundingClientRect();
+            const yesRect = btnYes.getBoundingClientRect();
+            const noRect = btnNo.getBoundingClientRect();
+
+            let mouseX = areaRect.width / 2;
+            let mouseY = areaRect.height / 2;
+
+            if (e && e.clientX) {
+                mouseX = e.clientX - areaRect.left;
+                mouseY = e.clientY - areaRect.top;
+            }
+
+            const noCenterX = (noRect.left - areaRect.left) + noRect.width / 2;
+            const noCenterY = (noRect.top - areaRect.top) + noRect.height / 2;
+
+            const btnWidth = yesRect.width || 100;
+            const btnHeight = yesRect.height || 48;
+
+            const minDistFromCursor = 150;
+            const minDistFromNoBtn = 130;
+
+            let bestX = 0;
+            let bestY = 0;
+            let maxDist = -1;
+
+            for (let attempt = 0; attempt < 60; attempt++) {
+                let candLeft = 10 + Math.random() * (areaRect.width - btnWidth - 20);
+                let candTop = 10 + Math.random() * (areaRect.height - btnHeight - 20);
+
+                let candCenterX = candLeft + btnWidth / 2;
+                let candCenterY = candTop + btnHeight / 2;
+
+                let distToMouse = Math.hypot(candCenterX - mouseX, candCenterY - mouseY);
+                let distToNoBtn = Math.hypot(candCenterX - noCenterX, candCenterY - noCenterY);
+
+                if (distToMouse > maxDist) {
+                    maxDist = distToMouse;
+                    bestX = candLeft;
+                    bestY = candTop;
+                }
+
+                if (distToMouse >= minDistFromCursor && distToNoBtn >= minDistFromNoBtn) {
+                    bestX = candLeft;
+                    bestY = candTop;
+                    break;
+                }
+            }
+
+            btnYes.style.transform = 'none';
+            btnYes.style.left = `${bestX}px`;
+            btnYes.style.top = `${bestY}px`;
+        }
+
+        buttonsArea.addEventListener('mousemove', (e) => {
+            const yesRect = btnYes.getBoundingClientRect();
+            const dist = Math.hypot(
+                e.clientX - (yesRect.left + yesRect.width / 2),
+                e.clientY - (yesRect.top + yesRect.height / 2)
+            );
+            if (dist < 110) {
+                moveYesButton(e);
+            }
+        });
+
+        btnYes.addEventListener('mouseenter', moveYesButton);
+        btnYes.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            moveYesButton(e);
+        });
+
+        function resetQuestions() {
+            currentQuestionIdx = 0;
+            updateQuestionUI();
+            document.getElementById('questions-container').classList.remove('hidden');
+            document.getElementById('kaspi-receipt-container').classList.add('hidden');
+            document.getElementById('pre-receipt-modal').classList.add('hidden');
+            document.getElementById('pre-receipt-modal').classList.remove('flex');
+        }
+
+        function updateQuestionUI() {
+            const q = questions[currentQuestionIdx];
+            document.getElementById('question-badge').innerText = q.badge;
+            document.getElementById('question-text').innerText = q.text;
+            document.getElementById('question-image').src = q.image;
+
+            // Reset Symmetrical Initial Layout
+            btnNo.style.left = '25%';
+            btnNo.style.top = '50%';
+            btnNo.style.transform = 'translate(-50%, -50%)';
+
+            btnYes.style.left = '75%';
+            btnYes.style.top = '50%';
+            btnYes.style.transform = 'translate(-50%, -50%)';
+        }
+
+        function answerNo() {
+            currentQuestionIdx++;
+            if (currentQuestionIdx < questions.length) {
+                updateQuestionUI();
+            } else {
+                showPreReceiptModal();
+            }
+        }
+
+        function showPreReceiptModal() {
+            const modal = document.getElementById('pre-receipt-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function showKaspiReceipt() {
+            const modal = document.getElementById('pre-receipt-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+
+            document.getElementById('questions-container').classList.add('hidden');
+            document.getElementById('kaspi-receipt-container').classList.remove('hidden');
+
+            const now = new Date();
+            const options = { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+            document.getElementById('receipt-date').innerText = now.toLocaleDateString('ru-RU', options);
+
+            triggerConfettiBurst();
+        }
+
+        const confettiCanvas = document.getElementById('confetti-canvas');
+        const cCtx = confettiCanvas.getContext('2d');
+        let confettiParticles = [];
+
+        function resizeConfettiCanvas() {
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeConfettiCanvas);
+        resizeConfettiCanvas();
+
+        function triggerConfettiBurst() {
+            confettiParticles = [];
+            const colors = ['#00A859', '#FF85A1', '#FFD166', '#06D6A0', '#118AB2', '#FF477E', '#A6C1EE', '#fbbf24'];
+            
+            for (let i = 0; i < 180; i++) {
+                confettiParticles.push({
+                    x: confettiCanvas.width / 2,
+                    y: confettiCanvas.height / 2 - 50,
+                    vx: (Math.random() - 0.5) * 22,
+                    vy: (Math.random() - 0.8) * 22,
+                    size: Math.random() * 10 + 6,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rotation: Math.random() * 360,
+                    rSpeed: (Math.random() - 0.5) * 12,
+                    gravity: 0.32,
+                    opacity: 1
+                });
+            }
+            animateConfetti();
+        }
+
+        function animateConfetti() {
+            cCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            let activeCount = 0;
+
+            confettiParticles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += p.gravity;
+                p.rotation += p.rSpeed;
+                p.opacity -= 0.007;
+
+                if (p.opacity > 0) {
+                    activeCount++;
+                    cCtx.save();
+                    cCtx.translate(p.x, p.y);
+                    cCtx.rotate((p.rotation * Math.PI) / 180);
+                    cCtx.globalAlpha = Math.max(0, p.opacity);
+                    cCtx.fillStyle = p.color;
+                    cCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    cCtx.restore();
+                }
+            });
+
+            if (activeCount > 0) {
+                requestAnimationFrame(animateConfetti);
+            }
+        }
+    </script>
+</body>
+</html>
